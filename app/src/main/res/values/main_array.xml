@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_array">
+        <item>SecondActivity</item>
+        <item>SecondActivity</item>
+        <item>SecondActivity</item>
+        <item>SecondActivity</item>
+        <item>SecondActivity</item>
+    </string-array>
+</resources>

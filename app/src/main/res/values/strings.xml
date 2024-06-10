@@ -1,0 +1,7 @@
+<resources>
+    <string name="week10_11">2071129_exercise_app</string>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+</resources>
