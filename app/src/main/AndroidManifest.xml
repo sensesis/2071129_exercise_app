@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
-
+        <activity
+            android:name=".LegActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,10 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SecondActivity"/>
-        <activity android:name=".ThirdActivity"/>
-        <activity android:name=".MemoActivity"/>
+        <activity android:name=".SecondActivity" />
+        <activity android:name=".ThirdActivity" />
+        <activity android:name=".BackActivity" />
+        <activity android:name=".ChestActivity" />
+        <activity android:name=".ShoulderActivity" />
+        <activity android:name=".ArmActivity" />
+        <activity android:name=".AbsActivity" />
+        <activity android:name=".LowerActivity" />
     </application>
 
 </manifest>
