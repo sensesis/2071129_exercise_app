@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -39,8 +41,37 @@ public class BackActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+        String[] items = getResources().getStringArray(R.array.sub_back_array);
 
+        // 이미지 뷰들을 배열에 할당합니다
+        ImageView[] imageViews = new ImageView[3];
+        int[] imageViewIds = {
+                R.id.iv1, R.id.iv2, R.id.iv3
+        };
+
+        for (int i = 0; i < imageViews.length; i++) {
+
+            imageViews[i] = findViewById(imageViewIds[i]);
+            int finalI = i;
+            imageViews[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    try {
+
+                        Class<?> selectedClass = Class.forName("com.cookandroid.week10_11." + items[finalI]);
+                        // 해당 클래스로 Intent를 생성합니다.
+                        Intent intent = new Intent(BackActivity.this, selectedClass);
+                        // 액티비티를 시작합니다.
+                        startActivity(intent);
+                    }catch (ClassNotFoundException e) {
+                        e.printStackTrace(); // 클래스 못 찾으면 예외 처리
+                    }
+                }
+            });
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

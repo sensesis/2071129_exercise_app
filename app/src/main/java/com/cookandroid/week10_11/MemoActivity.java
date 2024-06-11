@@ -7,15 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MemoActivity extends AppCompatActivity {
 
-    private Toolbar toolbar3;
+    private ListView noticeListView;
+    private NoticeListAdapter adapter;
+    private List<Notice> noticeList;
+
+    private Toolbar toolbar;
     private ActionBar actionBar;
     private Spinner spinner;
 
@@ -24,8 +32,19 @@ public class MemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memo);
 
-        toolbar3 = findViewById(R.id.toolbar3);
-        setSupportActionBar(toolbar3);
+        noticeListView = (ListView) findViewById(R.id.noticeListView);
+        noticeList = new ArrayList<Notice>();
+        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
+        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
+        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
+        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
+
+        adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
+        noticeListView.setAdapter(adapter);
+
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);

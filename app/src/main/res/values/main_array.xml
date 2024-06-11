@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="main_array">
-        <item>SecondActivity</item>
-        <item>SecondActivity</item>
-        <item>SecondActivity</item>
-        <item>SecondActivity</item>
-        <item>SecondActivity</item>
+        <item>BackActivity</item>
+        <item>ChestActivity</item>
+        <item>ShoulderActivity</item>
+        <item>LowerActivity</item>
+        <item>ArmActivity</item>
+        <item>ArsActivity</item>
+        <!--<item>BackActivity</item>
+                <item>ChestActivity</item>
+                <item>ShoulderActivity</item>
+                <item>ArmActivity</item>
+                <item>AbsActivity</item>-->
     </string-array>
 </resources>
+
