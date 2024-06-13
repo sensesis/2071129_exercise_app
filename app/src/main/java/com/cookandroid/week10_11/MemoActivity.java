@@ -2,9 +2,10 @@ package com.cookandroid.week10_11;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -14,8 +15,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MemoActivity extends AppCompatActivity {
 
@@ -32,16 +43,10 @@ public class MemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memo);
 
-        noticeListView = (ListView) findViewById(R.id.noticeListView);
-        noticeList = new ArrayList<Notice>();
-        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
-        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
-        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
-        noticeList.add(new Notice("공지사항입니다","안경잡이 개발자","2024-06-11"));
-
+        noticeListView = findViewById(R.id.noticeListView);
+        noticeList = new ArrayList<>();
         adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
         noticeListView.setAdapter(adapter);
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,6 +76,9 @@ public class MemoActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        // 새로운 네트워크 요청 메서드 호출
+        fetchNotices();
     }
 
     @Override
@@ -89,19 +97,50 @@ public class MemoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // 추가 코드 부분
-    private void saveMainLayout(View mainLayout) {
-        String mainLayoutXml = ViewToXmlConverter.convertViewToXml(mainLayout);
-        // 여기서 mainLayoutXml을 저장하는 로직을 구현하세요.
-    }
+    private void fetchNotices() {
+        OkHttpClient client = new OkHttpClient();
 
-    private void loadMainLayout(String mainLayoutXml, ViewGroup memoLayout) {
-        View mainLayout = XmlToViewConverter.convertXmlToView(mainLayoutXml, memoLayout);
-        if (mainLayout != null) {
-            memoLayout.removeAllViews(); // 기존에 추가된 뷰를 모두 제거하고
-            memoLayout.addView(mainLayout);
+        Request request = new Request.Builder()
+                .url("https://sensesis.mycafe24.com/NoticeList.php")
+                .build();
 
-            memoLayout.invalidate();
-        }
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String responseData = response.body().string();
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(responseData);
+                                JSONArray jsonArray = jsonObject.getJSONArray("response");
+                                int count = 0;
+                                String noticeContent, noticeName, noticeDate;
+
+                                while (count < jsonArray.length()) {
+                                    JSONObject object = jsonArray.getJSONObject(count);
+                                    noticeContent = object.getString("noticeContent");
+                                    noticeName = object.getString("noticeName");
+                                    noticeDate = object.getString("noticeDate");
+                                    Notice notice = new Notice(noticeContent, noticeName, noticeDate);
+                                    noticeList.add(notice);
+                                    count++;
+                                }
+                                adapter.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }

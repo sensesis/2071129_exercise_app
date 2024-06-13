@@ -124,7 +124,7 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="365dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/etNote"
         app:layout_constraintStart_toStartOf="parent"
