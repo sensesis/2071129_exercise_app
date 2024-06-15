@@ -30,9 +30,9 @@ import okhttp3.Response;
 
 public class MemoActivity extends AppCompatActivity {
 
-    private ListView noticeListView;
-    private NoticeListAdapter adapter;
-    private List<Notice> noticeList;
+    private ListView exerciseListView;
+    private ExerciseListAdapter adapter;
+    private List<Exercise> exerciseList;
 
     private Toolbar toolbar;
     private ActionBar actionBar;
@@ -43,10 +43,10 @@ public class MemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memo);
 
-        noticeListView = findViewById(R.id.noticeListView);
-        noticeList = new ArrayList<>();
-        adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
-        noticeListView.setAdapter(adapter);
+        exerciseListView = findViewById(R.id.exerciseListView);
+        exerciseList = new ArrayList<>();
+        adapter = new ExerciseListAdapter(getApplicationContext(), exerciseList);
+        exerciseListView.setAdapter(adapter);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +78,7 @@ public class MemoActivity extends AppCompatActivity {
         });
 
         // 새로운 네트워크 요청 메서드 호출
-        fetchNotices();
+        fetchExercises();
     }
 
     @Override
@@ -97,11 +97,11 @@ public class MemoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetchNotices() {
+    private void fetchExercises() {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://sensesis.mycafe24.com/NoticeList.php")
+                .url("https://example.com/ExerciseList.php") // 여기에 실제 API URL을 넣어야 합니다.
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -119,19 +119,22 @@ public class MemoActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                JSONObject jsonObject = new JSONObject(responseData);
-                                JSONArray jsonArray = jsonObject.getJSONArray("response");
-                                int count = 0;
-                                String noticeContent, noticeName, noticeDate;
+                                JSONArray jsonArray = new JSONArray(responseData);
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String exerciseName = jsonObject.getString("exerciseName");
+                                    String exerciseDate = jsonObject.getString("exerciseDate");
+                                    List<Integer> weights = new ArrayList<>();
+                                    weights.add(jsonObject.getInt("weight1"));
+                                    weights.add(jsonObject.getInt("weight2"));
+                                    weights.add(jsonObject.getInt("weight3"));
+                                    weights.add(jsonObject.getInt("weight4"));
+                                    weights.add(jsonObject.getInt("weight5"));
+                                    double weightAvg = jsonObject.getDouble("weightAvg");
+                                    double timeAvg = jsonObject.getDouble("timeAvg");
 
-                                while (count < jsonArray.length()) {
-                                    JSONObject object = jsonArray.getJSONObject(count);
-                                    noticeContent = object.getString("noticeContent");
-                                    noticeName = object.getString("noticeName");
-                                    noticeDate = object.getString("noticeDate");
-                                    Notice notice = new Notice(noticeContent, noticeName, noticeDate);
-                                    noticeList.add(notice);
-                                    count++;
+                                    Exercise exercise = new Exercise(exerciseName, exerciseDate, weights, weightAvg, timeAvg);
+                                    exerciseList.add(exercise);
                                 }
                                 adapter.notifyDataSetChanged();
                             } catch (Exception e) {
