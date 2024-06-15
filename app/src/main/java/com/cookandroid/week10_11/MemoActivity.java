@@ -101,7 +101,7 @@ public class MemoActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://example.com/ExerciseList.php") // 여기에 실제 API URL을 넣어야 합니다.
+                .url("https://sensesis.cafe24.com/getExerciseData.php") // 여기에 실제 API URL을 넣어야 합니다.
                 .build();
 
         client.newCall(request).enqueue(new Callback() {

@@ -1,10 +1,17 @@
 package com.cookandroid.week10_11;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
@@ -19,6 +26,7 @@ import okhttp3.Response;
 public class MusclegroupsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ActionBar actionBar;
     private ImageView imageBack, imageChest, imageLegs, imageShoulders, imageArms, imageAbs;
 
     @Override
@@ -29,6 +37,12 @@ public class MusclegroupsActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
+
         imageBack = findViewById(R.id.image_back);
         imageChest = findViewById(R.id.image_chest);
         imageLegs = findViewById(R.id.image_legs);
@@ -36,7 +50,46 @@ public class MusclegroupsActivity extends AppCompatActivity {
         imageArms = findViewById(R.id.image_arms);
         imageAbs = findViewById(R.id.image_abs);
 
+
+        setClickListener(imageBack, "Back");
+        setClickListener(imageChest, "Chest");
+        setClickListener(imageLegs, "Legs");
+        setClickListener(imageShoulders, "Shoulders");
+        setClickListener(imageArms, "Arms");
+        setClickListener(imageAbs, "Abs");
         fetchExerciseData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.logout) {
+            // 로그아웃 아이템을 선택한 경우
+            // 로그아웃 처리를 수행하거나 로그아웃 액티비티로 이동하는 코드를 추가합니다.
+            return true;
+        } else if (itemId == R.id.account) {
+            // 계정 정보 아이템을 선택한 경우
+            Intent intent = new Intent(MusclegroupsActivity.this, MemoActivity.class);
+            startActivity(intent); // MemoActivity로 이동
+            return true;
+        } else if (itemId == android.R.id.home) {
+            // 뒤로 가기 버튼을 선택한 경우
+            // 현재 액티비티를 종료하는 코드를 추가합니다.
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setClickListener(ImageView imageView, final String muscleGroup) {
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MusclegroupsActivity.this, SubMusclesActivity.class);
+                intent.putExtra("muscleGroup", muscleGroup); // 선택한 근육 그룹을 인텐트에 추가합니다.
+                startActivity(intent);
+            }
+        });
     }
 
     private void fetchExerciseData() {

@@ -16,7 +16,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MusclegroupsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,5 +32,9 @@
         <activity android:name=".AbsActivity" />
         <activity android:name=".LowerActivity"/>
         <activity android:name=".MemoActivity"/>
+        <activity android:name=".SubMusclesActivity"/>
+
+
+
     </application>
 </manifest>
