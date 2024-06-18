@@ -27,6 +27,7 @@
         <activity android:name=".MemoActivity"/>
         <activity android:name=".SubMusclesActivity"/>
         <activity android:name=".ExercisesActivity"/>
+        <activity android:name=".ExerciseListActivity"/>
 
 
     </application>

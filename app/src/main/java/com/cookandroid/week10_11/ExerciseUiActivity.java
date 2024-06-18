@@ -1,6 +1,5 @@
 package com.cookandroid.week10_11;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,7 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MemoActivity extends AppCompatActivity {
+public class ExerciseUiActivity extends AppCompatActivity {
 
     private ListView exerciseListView;
     private ExerciseListAdapter adapter;
@@ -33,7 +32,7 @@ public class MemoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.memo);
+        setContentView(R.layout.exerciselist);
 
         exerciseListView = findViewById(R.id.exerciseListView);
         exerciseList = new ArrayList<>();
@@ -47,8 +46,13 @@ public class MemoActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // 서버에서 데이터 가져오기
-        fetchExercises();
+        // Intent에서 exerciseName 값 가져오기
+        String exerciseName = getIntent().getStringExtra("exerciseName");
+
+        if (exerciseName != null) {
+            // 서버에서 데이터 가져오기
+            fetchExercisesFromServer(exerciseName);
+        }
     }
 
     @Override
@@ -61,11 +65,14 @@ public class MemoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetchExercises() {
+    private void fetchExercisesFromServer(String exerciseName) {
         OkHttpClient client = new OkHttpClient();
 
+        // URL에 쿼리 파라미터로 exerciseName을 추가합니다.
+        String url = "https://sensesis.cafe24.com/getExerciseList.php?exerciseName=" + exerciseName;
+
         Request request = new Request.Builder()
-                .url("https://sensesis.cafe24.com/getExerciseData.php") // 여기에 실제 API URL을 넣어야 합니다.
+                .url(url)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -87,7 +94,7 @@ public class MemoActivity extends AppCompatActivity {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     String exerciseName = jsonObject.getString("exerciseName");
-                                    String exerciseDate = jsonObject.getString("exerciseDate");
+                                    String exerciseDate = jsonObject.getString("date");
                                     String edit = jsonObject.getString("edit");
                                     List<Integer> weights = new ArrayList<>();
                                     weights.add(jsonObject.getInt("weight1"));
@@ -113,9 +120,9 @@ public class MemoActivity extends AppCompatActivity {
                                     int rating = jsonObject.getInt("rating");
 
                                     ExerciseUi exercise = new ExerciseUi(exerciseName, exerciseDate, edit, weights, numbers, times, avgTime, avgWeight, avgNumber, rating);
-                                    exerciseList.add(exercise);
+                                    exerciseList.add(exercise); // 리스트에 추가
                                 }
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyDataSetChanged(); // 어댑터 갱신
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

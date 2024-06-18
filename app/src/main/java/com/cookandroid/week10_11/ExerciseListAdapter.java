@@ -1,6 +1,7 @@
 package com.cookandroid.week10_11;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,10 @@ public class ExerciseListAdapter extends BaseAdapter {
 
         partText.setText(exercise.getExerciseName());
         dateText.setText(exercise.getExerciseDate());
-        weightAvgText.setText("평균무게: " + exercise.getWeightAvg());
-        timeAvgText.setText("평균시간: " + exercise.getTimeAvg());
+        weightAvgText.setText("평균무게: " + exercise.getAvgWeight());
+        timeAvgText.setText("평균시간: " + exercise.getAvgTime());
+
+        Log.d("ExerciseListAdapter", "Set view for exercise: " + exercise.getExerciseName());
 
         return convertView;
     }
