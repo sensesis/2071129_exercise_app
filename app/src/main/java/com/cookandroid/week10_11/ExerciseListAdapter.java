@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ExerciseListAdapter extends BaseAdapter {
     private Context context;
-    private List<Exercise> exerciseList;
+    private List<ExerciseUi> exerciseList;
 
-    public ExerciseListAdapter(Context context, List<Exercise> exerciseList) {
+    public ExerciseListAdapter(Context context, List<ExerciseUi> exerciseList) {
         this.context = context;
         this.exerciseList = exerciseList;
     }
@@ -37,7 +37,7 @@ public class ExerciseListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.exercise, parent, false);
+            convertView = inflater.inflate(R.layout.exerciseui, parent, false);
         }
 
         TextView weight1 = convertView.findViewById(R.id.weight1);
@@ -50,7 +50,7 @@ public class ExerciseListAdapter extends BaseAdapter {
         TextView weightAvgText = convertView.findViewById(R.id.weightAvgText);
         TextView timeAvgText = convertView.findViewById(R.id.timeAvgText);
 
-        Exercise exercise = exerciseList.get(position);
+        ExerciseUi exercise = exerciseList.get(position);
 
         List<Integer> weights = exercise.getWeights();
         weight1.setText(String.valueOf(weights.get(0)));

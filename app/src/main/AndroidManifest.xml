@@ -24,16 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SecondActivity" />
-        <activity android:name=".ThirdActivity" />
-        <activity android:name=".BackActivity" />
-        <activity android:name=".ChestActivity" />
-        <activity android:name=".ShoulderActivity" />
-        <activity android:name=".ArmActivity" />
-        <activity android:name=".AbsActivity" />
-        <activity android:name=".LowerActivity"/>
         <activity android:name=".MemoActivity"/>
         <activity android:name=".SubMusclesActivity"/>
-
+        <activity android:name=".ExercisesActivity"/>
 
 
     </application>

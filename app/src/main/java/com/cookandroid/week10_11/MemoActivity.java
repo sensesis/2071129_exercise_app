@@ -32,7 +32,7 @@ public class MemoActivity extends AppCompatActivity {
 
     private ListView exerciseListView;
     private ExerciseListAdapter adapter;
-    private List<Exercise> exerciseList;
+    private List<ExerciseUi> exerciseList;
 
     private Toolbar toolbar;
     private ActionBar actionBar;
@@ -133,7 +133,7 @@ public class MemoActivity extends AppCompatActivity {
                                     double weightAvg = jsonObject.getDouble("weightAvg");
                                     double timeAvg = jsonObject.getDouble("timeAvg");
 
-                                    Exercise exercise = new Exercise(exerciseName, exerciseDate, weights, weightAvg, timeAvg);
+                                    ExerciseUi exercise = new ExerciseUi(exerciseName, exerciseDate, weights, weightAvg, timeAvg);
                                     exerciseList.add(exercise);
                                 }
                                 adapter.notifyDataSetChanged();

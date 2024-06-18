@@ -40,4 +40,6 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.picasso:picasso:2.71828") // 이미지 로딩 및 캐싱 라이브러리
+    implementation ("com.github.bumptech.glide:glide:4.11.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
 }

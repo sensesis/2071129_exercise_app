@@ -2,7 +2,7 @@ package com.cookandroid.week10_11;
 
 import java.util.List;
 
-public class Exercise {
+public class ExerciseUi {
 
     private String exerciseName; // 해당 부위이름
     private String exerciseDate; // 해당 운동날짜
@@ -10,7 +10,7 @@ public class Exercise {
     private double weightAvg; // 평균무게
     private double timeAvg; // 평균시간
 
-    public Exercise(String exerciseName, String exerciseDate, List<Integer> weights, double weightAvg, double timeAvg) {
+    public ExerciseUi(String exerciseName, String exerciseDate, List<Integer> weights, double weightAvg, double timeAvg) {
         this.exerciseName = exerciseName;
         this.exerciseDate = exerciseDate;
         this.weights = weights;

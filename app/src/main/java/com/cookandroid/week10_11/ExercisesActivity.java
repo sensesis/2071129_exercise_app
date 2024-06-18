@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,58 +29,71 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class SubMusclesActivity extends AppCompatActivity {
+public class ExercisesActivity extends AppCompatActivity {
 
+    private static final String TAG = "ExercisesActivity";
     private RecyclerView recyclerView;
-    private SubMusclesAdapter subMusclesAdapter;
-    private List<MuscleItem> muscleItemList;
+    private ExercisesAdapter exercisesAdapter;
+    private List<ExercisesItem> exerciseItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.submuscles);
+        setContentView(R.layout.exercises);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        muscleItemList = new ArrayList<>();
-        subMusclesAdapter = new SubMusclesAdapter(this, muscleItemList);
-        recyclerView.setAdapter(subMusclesAdapter);
+        exerciseItemList = new ArrayList<>();
+        exercisesAdapter = new ExercisesAdapter(this, exerciseItemList);
+        recyclerView.setAdapter(exercisesAdapter);
 
-        String muscleGroup = getIntent().getStringExtra("muscleGroup");
-        Log.d("SubMusclesActivity", "Received muscleGroup: " + muscleGroup);
-        if (muscleGroup != null) {
-            fetchExerciseData(muscleGroup);
+        Intent intent = getIntent();
+        String subMuscleGroup = intent.getStringExtra("subMuscleGroup");
+
+        Log.d(TAG, "Received subMuscleGroup: " + subMuscleGroup);
+
+        if (subMuscleGroup != null) {
+            fetchExercisesData(subMuscleGroup);
         } else {
-            Log.e("SubMusclesActivity", "No muscleGroup received");
+            Log.e(TAG, "No subMuscleGroup received");
         }
     }
 
-    private void fetchExerciseData(String muscleGroup) {
+    private void fetchExercisesData(String subMuscleGroup) {
         OkHttpClient client = new OkHttpClient();
+
+        String encodedSubMuscleGroup;
+        try {
+            encodedSubMuscleGroup = URLEncoder.encode(subMuscleGroup, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        String url = "https://sensesis.mycafe24.com/getExerciseData.php?subMuscleGroup=" + encodedSubMuscleGroup;
+
         Request request = new Request.Builder()
-                .url("https://sensesis.mycafe24.com/getSubMuscles.php?muscleGroup=" + muscleGroup)
+                .url(url)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(ExercisesActivity.this, "Network Error", Toast.LENGTH_SHORT).show());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     final String responseData = response.body().string();
-                    Log.d("SubMusclesActivity", "Response received: " + responseData);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            processJsonData(responseData);
-                        }
-                    });
+                    Log.d(TAG, "Response received: " + responseData); // 로그 출력
+                    runOnUiThread(() -> processJsonData(responseData));
                 } else {
-                    Log.e("SubMusclesActivity", "Request not successful");
+                    Log.e(TAG, "Request not successful: " + response.message());
+                    runOnUiThread(() -> Toast.makeText(ExercisesActivity.this, "Server Error", Toast.LENGTH_SHORT).show());
                 }
             }
         });
@@ -88,18 +102,19 @@ public class SubMusclesActivity extends AppCompatActivity {
     private void processJsonData(String jsonData) {
         try {
             JSONArray jsonArray = new JSONArray(jsonData);
-            muscleItemList.clear();
+            exerciseItemList.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String exerciseName = jsonObject.getString("name");
                 String imageUrl = jsonObject.getString("imageUrl");
 
-                MuscleItem muscleItem = new MuscleItem(exerciseName, imageUrl);
-                muscleItemList.add(muscleItem);
+                ExercisesItem exerciseItem = new ExercisesItem(exerciseName, imageUrl);
+                exerciseItemList.add(exerciseItem);
             }
-            subMusclesAdapter.notifyDataSetChanged();
+            exercisesAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(ExercisesActivity.this, "Data Parsing Error", Toast.LENGTH_SHORT).show();
         }
     }
 }

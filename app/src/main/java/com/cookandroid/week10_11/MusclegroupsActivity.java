@@ -96,7 +96,7 @@ public class MusclegroupsActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://example.com/getExerciseData.php") // 실제 API URL로 변경하세요
+                .url("https://example.com/getMuscleGroup.php") // 실제 API URL로 변경하세요
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
