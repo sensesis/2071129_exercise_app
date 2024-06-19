@@ -30,14 +30,35 @@ import okhttp3.Response;
 
 public class SubMusclesActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
+    private ActionBar actionBar;
     private RecyclerView recyclerView;
     private SubMusclesAdapter subMusclesAdapter;
     private List<MuscleItem> muscleItemList;
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            // 뒤로 가기 버튼을 선택한 경우
+            // 현재 액티비티를 종료하는 코드를 추가합니다.
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.submuscles);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));

@@ -40,6 +40,18 @@ public class ExerciseListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ActionBar actionBar;
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            // 뒤로 가기 버튼을 선택한 경우
+            // 현재 액티비티를 종료하는 코드를 추가합니다.
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,17 +89,6 @@ public class ExerciseListActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void fetchExercisesFromServer(String exerciseName) {

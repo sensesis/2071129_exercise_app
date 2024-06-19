@@ -63,16 +63,8 @@ public class MusclegroupsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.logout) {
-            // 로그아웃 아이템을 선택한 경우
-            // 로그아웃 처리를 수행하거나 로그아웃 액티비티로 이동하는 코드를 추가합니다.
-            return true;
-        } else if (itemId == R.id.account) {
-            // 계정 정보 아이템을 선택한 경우
-            Intent intent = new Intent(MusclegroupsActivity.this, MemoActivity.class);
-            startActivity(intent); // MemoActivity로 이동
-            return true;
-        } else if (itemId == android.R.id.home) {
+
+        if (itemId == android.R.id.home) {
             // 뒤로 가기 버튼을 선택한 경우
             // 현재 액티비티를 종료하는 코드를 추가합니다.
             finish();

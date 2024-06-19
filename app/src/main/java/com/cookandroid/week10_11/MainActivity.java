@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private long startTimeInMillis;
     private CountDownTimer countDownTimer;
 
-    private Toolbar toolbar2;
+    private Toolbar toolbar;
     private ActionBar actionBar;
 
     boolean isFirstClick = true;
@@ -96,16 +96,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.logout) {
-            // 로그아웃 아이템을 선택한 경우
-            // 로그아웃 처리를 수행하거나 로그아웃 액티비티로 이동하는 코드를 추가합니다.
-            return true;
-        } else if (itemId == R.id.account) {
-            // 계정 정보 아이템을 선택한 경우
-            Intent intent = new Intent(MainActivity.this, MemoActivity.class);
-            startActivity(intent); // MemoActivity로 이동
-            return true;
-        } else if (itemId == android.R.id.home) {
+        if (itemId == android.R.id.home) {
             // 뒤로 가기 버튼을 선택한 경우
             // 현재 액티비티를 종료하는 코드를 추가합니다.
             finish();
@@ -141,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
         TextView4 = findViewById(R.id.TextView4);
         TextView5 = findViewById(R.id.TextView5);
 
-        toolbar2 = findViewById(R.id.toolbar2);
-        setSupportActionBar(toolbar2);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
@@ -299,20 +290,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        btnLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadNote();
-            }
-        });
-
-        /*backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
     }
 
 

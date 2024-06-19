@@ -7,9 +7,10 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -17,11 +18,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20dp"
-            android:text="Title">
-
-        </TextView>
+            android:text="MuscleLog"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center" />
 
 
     </androidx.appcompat.widget.Toolbar>
@@ -35,7 +35,7 @@
         android:inputType="textMultiLine"
         android:padding="10dp"
         android:layout_marginTop="110dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/rround"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/gridLayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
             android:textSize="18sp"
 
             android:textColor="#000000"
-            android:background="@drawable/rounded_textview_border"
+            android:background="@drawable/rround"
             />
 
         <TimePicker
@@ -95,7 +95,7 @@
             android:layout_width="128dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:background="@drawable/rounded_button_border"
+            android:background="@drawable/round"
             android:text="시작" />
 
         <Button
@@ -103,7 +103,7 @@
             android:layout_width="127dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:background="@drawable/rounded_button_border"
+            android:background="@drawable/round"
             android:text="일시정지" />
 
         <Button
@@ -111,7 +111,7 @@
             android:layout_width="127dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:background="@drawable/rounded_button_border"
+            android:background="@drawable/round"
             android:text="생성하기" />
     </GridLayout>
 
@@ -140,7 +140,6 @@
                 android:id="@+id/checkBox1"
                 android:layout_width="48dp"
                 android:layout_height="60dp"
-
                 android:checked="false"
                 />
 
@@ -149,7 +148,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:background="@drawable/rounded_edittext_border"
+                android:background="@drawable/round"
                 android:inputType="number"
                 />
 
@@ -160,7 +159,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/dround"
                 android:inputType="number"
                 >
             </EditText>
@@ -171,7 +170,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/pround"
                 >
             </TextView>
         </LinearLayout>
@@ -197,7 +196,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:background="@drawable/rounded_edittext_border"
+                android:background="@drawable/round"
                 android:inputType="number"
                 />
 
@@ -207,7 +206,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/dround"
                 android:inputType="number"
                 >
             </EditText>
@@ -218,7 +217,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@@drawable/pround"
                 >
             </TextView>
         </LinearLayout>
@@ -244,7 +243,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:background="@drawable/rounded_edittext_border"
+                android:background="@drawable/round"
                 android:inputType="number"
                 />
 
@@ -254,7 +253,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/dround"
                 android:inputType="number"
                 >
             </EditText>
@@ -265,7 +264,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/pround"
                 >
             </TextView>
         </LinearLayout>
@@ -291,7 +290,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:background="@drawable/rounded_edittext_border"
+                android:background="@drawable/round"
                 android:inputType="number"
                 />
 
@@ -301,7 +300,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/dround"
                 android:inputType="number"
                 >
             </EditText>
@@ -312,7 +311,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/pround"
                 >
             </TextView>
         </LinearLayout>
@@ -338,7 +337,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:background="@drawable/rounded_edittext_border"
+                android:background="@drawable/round"
                 android:inputType="number"
                 />
 
@@ -348,7 +347,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/dround"
                 android:inputType="number"
                 >
             </EditText>
@@ -359,7 +358,7 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_textviewbox_border"
+                android:background="@drawable/pround"
                 >
             </TextView>
         </LinearLayout>
@@ -377,6 +376,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         >
 
         <Button
