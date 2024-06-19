@@ -69,7 +69,7 @@ public class ExerciseUiActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         // URL에 쿼리 파라미터로 exerciseName을 추가합니다.
-        String url = "https://sensesis.cafe24.com/getExerciseList.php?exerciseName=" + exerciseName;
+        String url = "https://sensesis.mycafe24.com/getExerciseList.php?exerciseName=" + exerciseName;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -96,18 +96,21 @@ public class ExerciseUiActivity extends AppCompatActivity {
                                     String exerciseName = jsonObject.getString("exerciseName");
                                     String exerciseDate = jsonObject.getString("date");
                                     String edit = jsonObject.getString("edit");
+
                                     List<Integer> weights = new ArrayList<>();
                                     weights.add(jsonObject.getInt("weight1"));
                                     weights.add(jsonObject.getInt("weight2"));
                                     weights.add(jsonObject.getInt("weight3"));
                                     weights.add(jsonObject.getInt("weight4"));
                                     weights.add(jsonObject.getInt("weight5"));
+
                                     List<Integer> numbers = new ArrayList<>();
                                     numbers.add(jsonObject.getInt("number1"));
                                     numbers.add(jsonObject.getInt("number2"));
                                     numbers.add(jsonObject.getInt("number3"));
                                     numbers.add(jsonObject.getInt("number4"));
                                     numbers.add(jsonObject.getInt("number5"));
+
                                     List<Float> times = new ArrayList<>();
                                     times.add((float)jsonObject.getDouble("time1"));
                                     times.add((float)jsonObject.getDouble("time2"));

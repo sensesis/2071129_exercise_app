@@ -31,7 +31,6 @@ public class ExerciseUi {
     public String getExerciseName() {
         return exerciseName;
     }
-
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
     }
@@ -88,9 +87,11 @@ public class ExerciseUi {
         return avgWeight;
     }
 
+
     public void setAvgWeight(double avgWeight) {
         this.avgWeight = avgWeight;
     }
+
 
     public double getAvgNumber() {
         return avgNumber;

@@ -1,97 +1,192 @@
 package com.cookandroid.week10_11;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private ActionBar actionBar;
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.logout) {
-            // 로그아웃 아이템을 선택한 경우
-            // 로그아웃 처리를 수행하거나 로그아웃 액티비티로 이동하는 코드를 추가합니다.
-            return true;
-        } else if (itemId == R.id.account) {
-            // 계정 정보 아이템을 선택한 경우
-            Intent intent = new Intent(MainActivity.this, MemoActivity.class);
-            startActivity(intent); // MemoActivity로 이동
-            return true;
-        } else if (itemId == android.R.id.home) {
-            // 뒤로 가기 버튼을 선택한 경우
-            // 현재 액티비티를 종료하는 코드를 추가합니다.
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    private EditText etNote;
+    private EditText[] editTexts = new EditText[5];
+    private TextView[] TextNumbers = new TextView[5];
+    private LinearLayout[] linearLayouts = new LinearLayout[5];
+    private Button btnNextButton, btnSave;
+    private RatingBar ratingBar;
+    private boolean timecheck = false; // 버튼 체크 활성화
+    private int[] linearLayoutIds = {
+            R.id.page1, R.id.page2, R.id.page3,
+            R.id.page4, R.id.page5
+    };
+    private int[] editTextIds = {
+            R.id.editText1, R.id.editText2, R.id.editText3,
+            R.id.editText4, R.id.editText5
+    };
+    private int[] textNumberIds = {
+            R.id.TextNumber1, R.id.TextNumber2, R.id.TextNumber3,
+            R.id.TextNumber4, R.id.TextNumber5
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        String[] items = getResources().getStringArray(R.array.main_array);
-
-
-
-        // 이미지 뷰들을 배열에 할당합니다
-        ImageView[] imageViews = new ImageView[6];
-        int[] imageViewIds = {
-                R.id.iv1, R.id.iv2, R.id.iv3,
-                R.id.iv4, R.id.iv5, R.id.iv6,
-        };
-
-        for (int i = 0; i < imageViews.length; i++) {
-
-            imageViews[i] = findViewById(imageViewIds[i]);
-            int finalI = i;
-            imageViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    try {
-
-                        Class<?> selectedClass = Class.forName("com.cookandroid.week10_11." + items[finalI]);
-                        // 해당 클래스로 Intent를 생성합니다.
-                        Intent intent = new Intent(MainActivity.this, selectedClass);
-                        // 액티비티를 시작합니다.
-                        startActivity(intent);
-                    }catch (ClassNotFoundException e) {
-                        e.printStackTrace(); // 클래스 못 찾으면 예외 처리
-                    }
-                }
-            });
+        for (int i = 0; i < linearLayoutIds.length; i++) {
+            linearLayouts[i] = findViewById(linearLayoutIds[i]);
         }
+        for (int i = 0; i < editTextIds.length; i++) {
+            editTexts[i] = findViewById(editTextIds[i]);
+        }
+        for (int i = 0; i < textNumberIds.length; i++) {
+            TextNumbers[i] = findViewById(textNumberIds[i]);
+        }
+
+        etNote = findViewById(R.id.etNote);
+        btnNextButton = findViewById(R.id.btnNextButton);
+        btnSave = findViewById(R.id.btnSave);
+        ratingBar = findViewById(R.id.ratingBar);
+
+        btnNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 현재는 인덱스 관련된 코드가 없으므로 단순하게 처리
+                Toast.makeText(getApplicationContext(), "Next button clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveDataToServer();
+            }
+        });
+    }
+
+    private void saveDataToServer() {
+        OkHttpClient client = new OkHttpClient();
+
+        String exerciseName = "바벨슈러그";
+        String note = "Test Note";
+        String date = "24-06-01";
+        float rating = 5.0f;
+
+        int weight1 = 10;
+        int weight2 = 20;
+        int weight3 = 30;
+        int weight4 = 40;
+        int weight5 = 50;
+
+        int number1 = 5;
+        int number2 = 10;
+        int number3 = 15;
+        int number4 = 20;
+        int number5 = 25;
+
+        String time1 = "00:30";
+        String time2 = "01:00";
+        String time3 = "01:30";
+        String time4 = "02:00";
+        String time5 = "02:30";
+
+        float ftime1 = 30.0f;
+        float ftime2 = 60.0f;
+        float ftime3 = 90.0f;
+        float ftime4 = 120.0f;
+        float ftime5 = 150.0f;
+
+        String avg_time = "01:30";
+        float avg_weight = 30.0f;
+        float avg_Num = 15.0f;
+
+        Log.d("saveDataToServer", "Preparing request body...");
+        RequestBody formBody = new FormBody.Builder()
+                .add("exerciseName", exerciseName)
+                .add("note", note)
+                .add("date", date)
+                .add("rating", String.valueOf(rating))
+                .add("weight1", String.valueOf(weight1))
+                .add("weight2", String.valueOf(weight2))
+                .add("weight3", String.valueOf(weight3))
+                .add("weight4", String.valueOf(weight4))
+                .add("weight5", String.valueOf(weight5))
+                .add("number1", String.valueOf(number1))
+                .add("number2", String.valueOf(number2))
+                .add("number3", String.valueOf(number3))
+                .add("number4", String.valueOf(number4))
+                .add("number5", String.valueOf(number5))
+                .add("time1", time1)
+                .add("time2", time2)
+                .add("time3", time3)
+                .add("time4", time4)
+                .add("time5", time5)
+                .add("avg_weight", String.valueOf(avg_weight))
+                .add("avg_num", String.valueOf(avg_Num))
+                .add("avg_time", avg_time)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://sensesis.mycafe24.com/getSaveExerciseData.php")
+                .post(formBody)
+                .build();
+
+        Log.d("saveDataToServer", "Sending request to server...");
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Log.e("saveDataToServer", "Request failed: " + e.getMessage());
+                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Server request failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
+            }
+
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String responseData = response.body().string();
+                    Log.d("saveDataToServer", "Response from server: " + responseData);
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Data saved successfully! Response: " + responseData, Toast.LENGTH_LONG).show();
+                    });
+                } else {
+                    Log.e("saveDataToServer", "Server returned an error: " + response.message());
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Server error: " + response.message(), Toast.LENGTH_LONG).show();
+                    });
+                }
+            }
+        });
     }
 }
