@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExerciseListAdapter extends BaseAdapter {
     private Context context;
@@ -46,9 +50,23 @@ public class ExerciseListAdapter extends BaseAdapter {
         TextView weight3 = convertView.findViewById(R.id.weight3);
         TextView weight4 = convertView.findViewById(R.id.weight4);
         TextView weight5 = convertView.findViewById(R.id.weight5);
+
+        TextView number1 = convertView.findViewById(R.id.number1);
+        TextView number2 = convertView.findViewById(R.id.number2);
+        TextView number3 = convertView.findViewById(R.id.number3);
+        TextView number4 = convertView.findViewById(R.id.number4);
+        TextView number5 = convertView.findViewById(R.id.number5);
+
+        TextView time1 = convertView.findViewById(R.id.time1);
+        TextView time2 = convertView.findViewById(R.id.time2);
+        TextView time3 = convertView.findViewById(R.id.time3);
+        TextView time4 = convertView.findViewById(R.id.time4);
+        TextView time5 = convertView.findViewById(R.id.time5);
+
         TextView partText = convertView.findViewById(R.id.partText);
         TextView dateText = convertView.findViewById(R.id.dateText);
         TextView weightAvgText = convertView.findViewById(R.id.weightAvgText);
+        TextView numberAvgText = convertView.findViewById(R.id.numberAvgText);
         TextView timeAvgText = convertView.findViewById(R.id.timeAvgText);
 
         ExerciseUi exercise = exerciseList.get(position);
@@ -60,9 +78,24 @@ public class ExerciseListAdapter extends BaseAdapter {
         weight4.setText(String.valueOf(weights.get(3)));
         weight5.setText(String.valueOf(weights.get(4)));
 
+        List<Integer> numbers = exercise.getNumbers();
+        number1.setText(String.valueOf(numbers.get(0)));
+        number2.setText(String.valueOf(numbers.get(1)));
+        number3.setText(String.valueOf(numbers.get(2)));
+        number4.setText(String.valueOf(numbers.get(3)));
+        number5.setText(String.valueOf(numbers.get(4)));
+
+        List<Float> times = exercise.getTimes();
+        time1.setText(String.valueOf(times.get(0)));
+        time2.setText(String.valueOf(times.get(1)));
+        time3.setText(String.valueOf(times.get(2)));
+        time4.setText(String.valueOf(times.get(3)));
+        time5.setText(String.valueOf(times.get(4)));
+
         partText.setText(exercise.getExerciseName());
         dateText.setText(exercise.getExerciseDate());
         weightAvgText.setText("평균무게: " + exercise.getAvgWeight());
+        numberAvgText.setText("평균횟수: " + exercise.getAvgNumber());
         timeAvgText.setText("평균시간: " + exercise.getAvgTime());
 
         Log.d("ExerciseListAdapter", "Set view for exercise: " + exercise.getExerciseName());
